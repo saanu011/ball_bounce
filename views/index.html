@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+<head>  
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script> -->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<script>
+
+let url  = 'http://127.0.0.1:4000/coordinate?restitution=0.75';
+let coordinate = [];
+
+fetch(url, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Custom-Header': '*'
+  },
+})
+.then((res) => res.json())
+.then((data) => {
+    coordinate = data["Coordinates array"];
+    plotTrajectory();
+})
+.catch((err) => console.log(err));
+
+
+// window.onload = function plotTrajectory () {
+function plotTrajectory () {
+    var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,  
+        title:{
+            text: "Motion of Bouncing ball"
+        },
+        axisY: {
+            title: "height",
+            valueFormatString: "#0,,.",
+            suffix: "mn",
+            // stripLines: [{
+            // 	value: 3366500,
+            // 	label: "Average"
+            // }]
+        },
+        data: [{
+            yValueFormatString: "",
+            xValueFormatString: "",
+            type: "spline",
+            dataPoints: coordinate
+        }]
+    });
+    chart.render();
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>
